@@ -22,7 +22,11 @@ ainsi que le Trend le plus répandu.
 Le code couleur est le suivant:
 
 Bleu -> Heureux
+
 Rouge -> Peur
+
 Vert -> Triste
+
 Rose / Violet -> Peur + Heureux
+
 Blanc -> Aucune humeur sort du lot
