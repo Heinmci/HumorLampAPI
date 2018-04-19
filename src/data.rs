@@ -37,20 +37,28 @@ impl MoodInTime {
 
     fn get_rgb(mood: &Mood) -> String {
         if mood.happy > mood.sad && mood.happy > mood.scared {
-            String::from("0,0,255|") // HAPPY
+            String::from("000,000,255,") // HAPPY
         } else if mood.happy > mood.sad && mood.happy < mood.scared {
-             String::from("0,255,0|") // SCARED
-        } else if mood.sad > mood.scared {
-            String::from("255,0,0|") // SAD
+             String::from("000,255,000,") // SCARED
+        } else if mood.sad > mood.scared && mood.sad > mood.happy {
+            String::from("255,000,000,") // SAD
+        } else if mood.sad == mood.scared && mood.sad > mood.happy {
+            String::from("255,255,000,") // SAD AND SCARED
+        } else if mood.happy == mood.scared && mood.scared > mood.sad {
+            String::from("000,255,255,") // HAPPY AND SCARED
+        } else if mood.happy == mood.sad && mood.happy > mood.scared {
+            String::from("255,000,255,") // HAPPY AND SAD
         } else {
-            String::from("255,255,255|") // EVERYTHING IS 0
+            String::from("255,255,255,") // EVERYTHING IS same value
         }
     }
 
     pub fn get_mood_last_8_minutes(&self) -> String {
         let mut result = self.mood_last_8_mniutes.iter().map(|x| MoodInTime::get_rgb(x)).collect::<String>();
         result.pop(); // Remove last | char
+        //result.push_str("000,000,000");
         result
+
 
     }
     

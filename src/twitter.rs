@@ -5,6 +5,18 @@ use serde_json;
 use oauth::Token;
 use keys;
 
+pub fn get_paris_coord() {
+    let consumer = Token::new(keys::CONSUMER_KEY, keys::CONSUMER_SECRET);
+    let access = Token::new(keys::ACCESS_TOKEN, keys::ACCESS_SECRET);
+
+    let bytes = oauth::get("https://api.twitter.com/1.1/geo/id/9f6a7707f18e0b1.json",
+                           &consumer,
+                           Some(&access),
+                           None).expect("a");
+    let test = String::from_utf8(bytes).expect("b");
+    println!("{}", test);
+
+}
 pub fn get_top_trend(location: &str) -> String {
     let consumer = Token::new(keys::CONSUMER_KEY, keys::CONSUMER_SECRET);
     let access = Token::new(keys::ACCESS_TOKEN, keys::ACCESS_SECRET);
