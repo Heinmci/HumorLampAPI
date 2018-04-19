@@ -15,12 +15,19 @@ Lastly, the display is used to display what we are currently displaying (French 
 
 The colour code is the following: 
 
-Bleu -> Happy
+Blue -> Happy
 
-Rouge -> Scared
+Red -> Scared
 
-Vert -> Sad
+Green -> Sad
 
-Rose / Violet -> Scared + Happy
+Pink / Purple -> Scared + Happy
 
-Blanc -> Nothing of note
+White -> Nothing of note
+
+To run the API, modify src/keys.rs with your Twitter API keys and type the following command: 
+```
+cargo run --release
+```
+
+
