@@ -1,32 +1,26 @@
-# HumorLampAPI
+# State of Mind Lamp
 
-Le but de ce projet est de pouvoir déterminer l'humeur du monde, où plus précisement celle
-de la franchophonie ainsi que celle de l'anglophonie
+The goal of this project it to be able to see the world's state of mind, or more precisely, the french and the english speaking people of the world.
 
-Pour ce faire, nous mettons en place deux streams sur l'API twitter, un avec des mots en anglais,
-et l'autre avec les mots en français.
-Nous comptons le nombre de fois que des mots associés à la peur / tristesse ou la joie sont
-mentionnés puis nous prenons le sentiment le plus prévalent pour chaque minute avec un historique de
-8 minutes.
-Nous nous servons également de l'API twitter pour afficher le Trend le plus utilisé du moment.
+To meet that goal, we've set up two streams to the Twitter API, one with english terms and the other with french terms.
+We count the number of times that a word associated to being scared, being sad and being happy are tweeted and we determine the one that is the most present, kepping a history of 8 minutes at a time.
+We also use the Twitter API to retrieve the current biggest trend.
 
-Du côté du micro-controlleur, nous avons une LED avec 8 voyants, un bouton, et un display.
-La LED affiche l'humeur de chacune des 8 dernières minutes et met à jour la minute en cours toutes
-les 5 secondes.
+On the micro-controller side, we have a LED with 8 lights, one button and one screen.
+The LED displays the worlds state of mind in the last 8 minutes and update the current minute every 5 seconds.
 
-Le bouton sert à basculer entre l'affichage de l'humeur francophone à celle anglophone.
+The button is used to switch between the french mood and the english one.
 
-Le display affiche si on est actuellement en train de requêtes les informations françaises ou anglaises
-ainsi que le Trend le plus répandu.
+Lastly, the display is used to display what we are currently displaying (French / English) as well as their biggest current trend.
 
-Le code couleur est le suivant:
+The colour code is the following: 
 
-Bleu -> Heureux
+Bleu -> Happy
 
-Rouge -> Peur
+Rouge -> Scared
 
-Vert -> Triste
+Vert -> Sad
 
-Rose / Violet -> Peur + Heureux
+Rose / Violet -> Scared + Happy
 
-Blanc -> Aucune humeur sort du lot
+Blanc -> Nothing of note
