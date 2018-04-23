@@ -15,7 +15,7 @@ mod keys;
 mod stream_handler;
 
 use data::{SharedData};
-use data::mood::MoodLocation;
+use data::mood::{MoodLocation, MoodType, MoodKeywords};
 
 use std::{thread};
 use std::sync::{Mutex, Arc};
@@ -54,11 +54,19 @@ fn main() {
     });
     
     let french_stream = thread::spawn( move || {
-        stream_handler::generic_launch_stream("heureux, heuereuse, peur, terrifie, deprime, anxieux, stresse, devaste", french_stream_data, MoodLocation::French);
+        let sad = MoodKeywords::new(MoodType::Sad, vec!["deprime".to_string(), "anxieux".to_string(), "devaste".to_string()]);
+        let happy = MoodKeywords::new(MoodType::Happy, vec!["heureux".to_string(), "heuereuse".to_string()]);
+        let scared = MoodKeywords::new(MoodType::Scared, vec!["peur".to_string(), "terrifie".to_string()]);
+        let moods_keywords = vec![sad, happy, scared];
+        stream_handler::generic_launch_stream(moods_keywords, french_stream_data, MoodLocation::French);
     });
 
     let english_stream = thread::spawn( move || {
-        stream_handler::generic_launch_stream("scared, happy, sad, frightened, terrified", english_stream_data, MoodLocation::English);
+        let sad = MoodKeywords::new(MoodType::Sad, vec!["sad".to_string(), "devastated".to_string()]);
+        let happy = MoodKeywords::new(MoodType::Happy, vec!["happy".to_string(), "extatic".to_string()]);
+        let scared = MoodKeywords::new(MoodType::Scared, vec!["scared".to_string(), "frightened".to_string(), "terrified".to_string()]);
+        let moods_keywords = vec![sad, happy, scared];
+        stream_handler::generic_launch_stream(moods_keywords, english_stream_data, MoodLocation::English);
     });
 
     french_stream.join();

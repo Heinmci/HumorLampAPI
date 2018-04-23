@@ -145,3 +145,25 @@ impl MoodColour {
         }
     }
 }
+
+pub struct MoodKeywords {
+    mood_type: MoodType,
+    keywords: Vec<String>
+}
+
+impl MoodKeywords {
+    pub fn new(mood_type: MoodType, keywords: Vec<String>) -> MoodKeywords {
+        MoodKeywords {
+            mood_type,
+            keywords
+        }
+    }
+
+    pub fn keywords(&self) -> &Vec<String> {
+        &self.keywords
+    }
+
+    pub fn mood_type(&self) -> MoodType {
+        self.mood_type
+    }
+}
