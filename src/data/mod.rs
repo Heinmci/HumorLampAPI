@@ -22,6 +22,10 @@ impl SharedData {
         self.geo_moods.get_mut(&location).unwrap()
     }
 
+    pub fn get_geo_moods_mut(&mut self) -> &mut HashMap<MoodLocation, MoodHistory> {
+        &mut self.geo_moods
+    }
+
     pub fn get_geo_mood(&self, location: &MoodLocation) -> &MoodHistory {
         self.geo_moods.get(&location).unwrap()
     }

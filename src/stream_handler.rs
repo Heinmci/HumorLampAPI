@@ -18,6 +18,7 @@ pub fn generic_launch_stream(keyword: Vec<MoodKeywords>, shared_data: Arc<Mutex<
             'outer: for mood_words in keyword.iter() {
                 for word in mood_words.keywords().iter() {
                     if tweet.text.contains(word) {
+                        println!("{}", tweet.text);
                         let mut data = shared_data.lock().unwrap();
                         let mood = data.get_geo_mood_mut(&mood_location);
                         mood.increment_mood(mood_words.mood_type());

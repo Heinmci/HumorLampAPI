@@ -1,11 +1,10 @@
 use std::collections::{VecDeque};
-use chrono_time::PreciseTime;
 use std::cmp::Ordering;
 
+#[derive(Debug)]
 pub struct MoodHistory {
     mood_history: VecDeque<Moods>,
     moods_of_interest: Vec<(MoodType, MoodColour)>,
-    pub seconds_since_switch: PreciseTime
 }
 
 impl MoodHistory {
@@ -20,7 +19,6 @@ impl MoodHistory {
         MoodHistory {
             mood_history: history,
             moods_of_interest,
-            seconds_since_switch: PreciseTime::now()
         }
     }
 
@@ -29,17 +27,12 @@ impl MoodHistory {
     }
     
     pub fn increment_mood(&mut self, mood_type: MoodType) {
-        let time_now = PreciseTime::now();
-        let diff = self.seconds_since_switch.to(time_now).num_seconds();
-
-        if diff > 60 {
-            self.mood_history.pop_back();
-            self.mood_history.push_front(Moods::new(&self.moods_of_interest));
-            self.seconds_since_switch = time_now;
-        }
-
         self.mood_history[0].increment_mood(mood_type);
+    }
 
+    pub fn add_new_period_to_history(&mut self) {
+        self.mood_history.pop_back();
+        self.mood_history.push_front(Moods::new(&self.moods_of_interest));
     }
 }
 
