@@ -1,6 +1,7 @@
 use std::sync::{Mutex, Arc};
 use twitter;
 use data::SharedData;
+use data::mood::MoodLocation;
 
 pub fn paris_trend() -> String {
     generic_trend("615702")
@@ -15,7 +16,7 @@ pub fn english_trend() -> String {
 }
 
 pub fn paris_mood(api_data: &Arc<Mutex<SharedData>>) -> String {
-    generic_mood("p", api_data)
+    generic_mood("f", api_data)
 }
 
 pub fn france_mood(api_data: &Arc<Mutex<SharedData>>) -> String {
@@ -32,21 +33,17 @@ pub fn generic_trend(location: &str) -> String {
 
 pub fn generic_mood(location: &str, api_data: &Arc<Mutex<SharedData>>) -> String {
     match location {
-        "p" => {
-            let data = api_data.lock().unwrap();
-            data.paris_mood.get_mood_last_8_minutes()
-        },
         "f" => {
             let data = api_data.lock().unwrap();
-            data.french_mood.get_mood_last_8_minutes()
+            data.get_geo_mood(&MoodLocation::French).get_current_mood()
         },
         "e" => {
             let data = api_data.lock().unwrap();
-            data.english_mood.get_mood_last_8_minutes()
+            data.get_geo_mood(&MoodLocation::English).get_current_mood()
         },
         _ => {
             let data = api_data.lock().unwrap();
-            data.paris_mood.get_mood_last_8_minutes()
+            data.get_geo_mood(&MoodLocation::French).get_current_mood()
         }
     }
 }
