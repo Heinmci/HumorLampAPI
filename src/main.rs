@@ -23,7 +23,7 @@ use std::sync::{Mutex, Arc};
 use tiny_http::{Server, Response};
 use std::time::SystemTime;
 use tokio::prelude::*;
-use tokio::timer::Delay;
+use tokio::timer::Interval;
 use std::time::{Duration, Instant};
 
 // TODO: Import Moods and Colours from a file rather than in the code / Resolve tokio dependency nightmare...
@@ -33,6 +33,7 @@ fn main() {
     let api_data = Arc::clone(&shared_data);
     let french_stream_data = Arc::clone(&shared_data);
     let english_stream_data = Arc::clone(&shared_data);
+    let timer_shared_data = Arc::clone(&shared_data);
 
     let api_thread = thread::spawn( move || {
         let server = Server::http("0.0.0.0:8080").unwrap();
@@ -75,25 +76,22 @@ fn main() {
         stream_handler::generic_launch_stream(moods_keywords, english_stream_data, MoodLocation::English);
     });
 
+    let task = Interval::new(Instant::now(), Duration::from_secs(60))
+        .for_each(move |instant| {
+            println!("Adding period to vecdeque");
+            let mut data = timer_shared_data.lock().unwrap();
+            let geo_moods = data.get_geo_moods_mut();
+            for (_, mood_history) in geo_moods.iter_mut() {
+                mood_history.add_new_period_to_history();
+                println!("{:?}", mood_history);
+            }
+            Ok(())
+        })
+        .map_err(|e| panic!("interval errored; err={:?}", e));
 
-    loop {
-        let when = Instant::now() + Duration::from_secs(60);
-        let timer_shared_data = Arc::clone(&shared_data); // Is this really necessary?
-        let task = Delay::new(when)
-            .and_then( move |_| {
-                println!("Adding period to vecdeque");
-                let mut data = timer_shared_data.lock().unwrap();
-                let geo_moods = data.get_geo_moods_mut();
-                for (_, mood_history) in geo_moods.iter_mut() {
-                    mood_history.add_new_period_to_history();
-                    println!("{:?}", mood_history);
-                }
-                Ok(())
-            })
-            .map_err(|e| panic!("delay errored; err={:?}", e));
+    tokio::run(task);
 
-        tokio::run(task);
-    }
+
 
 
     french_stream.join();
